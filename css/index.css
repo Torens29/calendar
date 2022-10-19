@@ -1,0 +1,73 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu{
+    width: 360px;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+
+    font-size: 20px;
+}
+
+.step_back{
+    width: 23px;
+    height: 23px;
+
+
+    align-self: flex-end;
+
+    background-image: url("/img/стрелка.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(180deg);
+}
+
+.step_back:hover{
+    cursor: pointer;
+}
+
+.step_next{
+    width: 23px;
+    height: 23px;
+
+
+    align-self: flex-end;
+
+    background-image: url("/img/стрелка.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    
+}
+.step_next:hover{
+    cursor: pointer;
+}
+
+.calendar{
+    height: auto;
+    width: 400px;
+    background: rgb(187, 249, 252);
+    padding: 5px 5px 0px 5px;
+
+    display: grid;
+    grid-template-columns: repeat(7, 50px);
+    justify-content: space-between;
+
+    text-align: center;
+}
+
+.calendar__weeksDay_name{
+    background-color: #00ff8c;
+}
+
+.calendar__weeksDay_item{
+    margin-top: 5px;
+    background-color: rgb(0, 255, 213);
+
+}
+
