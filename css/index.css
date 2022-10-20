@@ -21,7 +21,7 @@ body{
 
     align-self: flex-end;
 
-    background-image: url("/img/стрелка.png");
+    background-image: url("../img/стрелка.png");
     background-repeat: no-repeat;
     background-size: contain;
     transform: rotate(180deg);
@@ -38,7 +38,7 @@ body{
 
     align-self: flex-end;
 
-    background-image: url("/img/стрелка.png");
+    background-image: url("../img/стрелка.png");
     background-repeat: no-repeat;
     background-size: contain;
 

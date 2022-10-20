@@ -1,18 +1,15 @@
 (() => {
-
-
+    let calendarDayNamber = document.querySelectorAll(".calendar__weeksDay_item");
+    let divMonth = document.querySelector(".month");
 let date={
     year: new Date().getFullYear(),
     month: new Date().getMonth()
 }
-
 fillCalc(date);
 
 // заполнение днями
 function fillCalc(date){
 
-    let calendar_DayNamber = document.querySelectorAll(".calendar__weeksDay_item");
-    let divMonth = document.querySelector(".month");
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     divMonth.innerHTML = date.year + " " + monthNames[date.month];
@@ -20,16 +17,23 @@ function fillCalc(date){
     let firstDayOfWeek = new Date(date.year, date.month, 0 ).getDay();
     if(firstDayOfWeek == 0) firstDayOfWeek = 7;
 
-    let lotDayOfMonth = new Date(date.year, date.month+1,0).getDate();
-    
-    for(let i=0; i<49; i++){
+    let lotDayOfMonth = new Date(date.year, date.month+1, 0).getDate();
         
+    for(let i=0; i<49; i++){
         if( firstDayOfWeek <= i  && i< lotDayOfMonth+firstDayOfWeek){
-            calendar_DayNamber[i].innerHTML = day;
+            calendarDayNamber[i].innerHTML = day;
+
+            if((day == new Date().getDate()) && (date.year == new Date().getFullYear()) && (date.month == new Date().getMonth())){
+                calendarDayNamber[i].style.backgroundColor = "#34bbd7";
+                console.log( (date.month == new Date().getMonth()), date.month, new Date().getMonth())
+            } 
+            else { 
+                calendar_DayNamber[i].style.backgroundColor = "#00FFD5"}
             day++;
+
+
         } else calendar_DayNamber[i].innerHTML = "";
     }
-    console.log(date.month, lotDayOfMonth)
 }    
     
 function stepNext(){
