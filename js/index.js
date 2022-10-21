@@ -46,15 +46,11 @@ function fillCalc(date){
     numMonth.innerHTML = date.getMonth();
 
     let formatterMonth = new Intl.DateTimeFormat("en", {
-        
-        // year: "numeric",
         month: "long",
     });
       
     let formatterYear = new Intl.DateTimeFormat("en", {
-        
         year: "numeric",
-        
     });
 
     console.log( formatterMonth.format(date) ,formatterYear.format(date)); 
@@ -81,13 +77,8 @@ function fillCalc(date){
                 calendarDayNamber[i].classList.remove("color_lBlue")    
             }    // "#00FFD5"}
             day++;
-
-
         } else calendarDayNamber[i].innerHTML = "";
     }
-
-
-   
 }    
     
 
@@ -102,7 +93,6 @@ function stepNext(){
         numMonth = 0 
         
     } fillCalc(new Date( year, numMonth));
-    
 }
 
 function stepBack(){
@@ -114,7 +104,6 @@ function stepBack(){
         year--;
         numMonth = 11;
     } fillCalc(new Date( year, numMonth))
-    
 }
 // перелиствование
     let btnStepNext = document.querySelector(".step_next");
