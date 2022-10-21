@@ -1,115 +1,119 @@
+const el = (tag, attrs = {}, children = []) => {
+    const elem = document.createElement(tag);
+    for (const [key, value] of Object.entries(attrs))
+        elem.setAttribute(key, value);
 
-createCalendarHTML();
-fillCalc(new Date());
+    elem.append(...children);
 
-function createCalendarHTML(){
-    let menu = document.createElement('div');
-    menu.className='menu';
-    menu.insertAdjacentHTML("afterbegin", `
-        <div class="step_back"></div>
-        <div class="month"></div>
-        <div class="year"></div>
-        <div class="step_next"></div>
-        <div class="numMonth"></div> 
-    `)
+    return elem;
+};
 
+const elDiv = el.bind(null, 'div');
 
-    let calendar = document.createElement('div');
-    calendar.className = 'calendar';
-    calendar.insertAdjacentHTML('afterbegin', `
-            <div class="calendar__weeksDay_name">пн</div>
-            <div class="calendar__weeksDay_name">вт</div>
-            <div class="calendar__weeksDay_name">ср</div>
-            <div class="calendar__weeksDay_name">чт</div>
-            <div class="calendar__weeksDay_name">пт</div>
-            <div class="calendar__weeksDay_name">сб</div>
-            <div class="calendar__weeksDay_name">вс</div>
-    `);
+const dateFormater = new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+});
 
-    for(let i=0; i<49; i++){
-        let item= document.createElement("div")
-        item.className = "calendar__weeksDay_item";
-        calendar.appendChild(item);
-    }
+function createCalendar(date = new Date()) {
+    const back = elDiv({ class: 'step_back' });
+    const next = elDiv({ class: 'step_next' });
+    const dateElem = elDiv({ class: 'year' });
+    const reset = elDiv({ class: 'reset' }, ['Reset']);
 
+    const daysNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((name) =>
+        elDiv({ class: 'calendar__weeksDay_name' }, [name])
+    );
 
-    document.body.appendChild(menu);
-    document.body.appendChild(calendar);
+    const items = Array(49)
+        .fill(0)
+        .map(() => elDiv({ class: 'calendar__weeksDay_item' }));
+
+    const wrapper = elDiv({ class: 'calendar-wrapper' }, [
+        elDiv({ class: 'menu' }, [back, dateElem, next]),
+        elDiv({ class: 'calendar' }, [].concat(daysNames, items)),
+        reset,
+    ]);
+
+    const fillCalc = () => {
+        let firstDayOfWeek = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            0
+        ).getDay();
+
+        if (firstDayOfWeek === 0) firstDayOfWeek = 7;
+
+        const lotDayOfMonth = new Date(
+            date.getFullYear(),
+            date.getMonth() + 1,
+            0
+        ).getDate();
+
+        let day = 1;
+        for (const [i, item] of items.entries()) {
+            if (i >= firstDayOfWeek && i < lotDayOfMonth + firstDayOfWeek) {
+                item.textContent = day;
+
+                if (
+                    day++ === new Date().getDate() &&
+                    date.getFullYear() == new Date().getFullYear() &&
+                    date.getMonth() == new Date().getMonth()
+                )
+                    item.classList.add('color_lBlue');
+                else {
+                    item.classList.add('color_turquoise');
+                    item.classList.remove('color_lBlue');
+                }
+            } else item.textContent = '';
+        }
+    };
+
+    const mutateDate = (newDate) => {
+        date = newDate;
+        dateElem.textContent = dateFormater.format(date);
+    };
+
+    const makeReset = () => mutateDate(new Date());
+
+    const step = (to = 1) => {
+        let newMonth = date.getMonth() + to;
+        let newYear = date.getFullYear();
+
+        if (newMonth > 11) {
+            newMonth = 0;
+            newYear++;
+        } else if (newMonth < 0) {
+            newMonth = 11;
+            newYear--;
+        }
+
+        mutateDate(new Date(newYear, newMonth));
+    };
+
+    const observer = new MutationObserver(fillCalc);
+    observer.observe(dateElem, { childList: true });
+
+    const stepBack = step.bind(null, -1);
+    const stepNext = step.bind(null, 1);
+
+    next.addEventListener('click', stepNext);
+    back.addEventListener('click', stepBack);
+
+    reset.addEventListener('click', makeReset);
+
+    mutateDate(date);
+    document.body.appendChild(wrapper);
+
+    return () => {
+        next.removeEventListener('click', stepBack);
+        back.removeEventListener('click', stepNext);
+        reset.removeEventListener('click', makeReset);
+
+        wrapper.remove();
+    };
 }
 
-// заполнение днями
-function fillCalc(date){
-    let calendarDayNamber = document.querySelectorAll(".calendar__weeksDay_item");
-    let divMonth = document.querySelector(".month");
-    let divYear = document.querySelector(".year");
-    let numMonth = document.querySelector(".numMonth");
-    numMonth.innerHTML = date.getMonth();
-
-    let formatterMonth = new Intl.DateTimeFormat("en", {
-        month: "long",
-    });
-      
-    let formatterYear = new Intl.DateTimeFormat("en", {
-        year: "numeric",
-    });
-
-    console.log( formatterMonth.format(date) ,formatterYear.format(date)); 
-
-    divMonth.innerHTML = formatterMonth.format(date);
-    divYear.innerHTML = formatterYear.format(date);
-
-    let day=1;
-    let firstDayOfWeek = new Date(date.getFullYear(), date.getMonth(), 0 ).getDay();
-    if(firstDayOfWeek == 0) firstDayOfWeek = 7;
-
-    let lotDayOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0).getDate();
-        
-    for(let i=0; i<49; i++){
-        if( firstDayOfWeek <= i  && i< lotDayOfMonth+firstDayOfWeek){
-            calendarDayNamber[i].innerHTML = day;
-
-            if((day == new Date().getDate()) && (date.getFullYear() == new Date().getFullYear()) && (date.getMonth() == new Date().getMonth())){
-                calendarDayNamber[i].classList.add("color_lBlue"); // "#34bbd7";
-                console.log( (date.getMonth() == new Date().getMonth()), date.getMonth(), new Date().getMonth())
-            } 
-            else { 
-                calendarDayNamber[i].classList.add("color_turquoise") 
-                calendarDayNamber[i].classList.remove("color_lBlue")    
-            }    // "#00FFD5"}
-            day++;
-        } else calendarDayNamber[i].innerHTML = "";
-    }
-}    
-    
-
-function stepNext(){
-    let numMonth = document.querySelector(".numMonth").innerHTML;
-    let year = document.querySelector(".year").innerHTML;
-   
-    numMonth++;
-    // let year;
-    if( numMonth > 11) {
-        year++;
-        numMonth = 0 
-        
-    } fillCalc(new Date( year, numMonth));
-}
-
-function stepBack(){
-    let numMonth = document.querySelector(".numMonth").innerHTML;
-    let year = document.querySelector(".year").innerHTML;
-
-    numMonth--;
-    if( numMonth < 0) {
-        year--;
-        numMonth = 11;
-    } fillCalc(new Date( year, numMonth))
-}
-// перелиствование
-    let btnStepNext = document.querySelector(".step_next");
-    let btnStepBack = document.querySelector(".step_back");
-
-    btnStepNext.addEventListener('click', stepNext)
-    btnStepBack.addEventListener('click', stepBack)
-
-
+const btn = el('button', {}, ['Delete calendar']);
+document.body.appendChild(btn);
+btn.addEventListener('click', createCalendar());

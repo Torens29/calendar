@@ -1,55 +1,51 @@
-body{
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.menu{
-    width: 360px;
+.menu {
+    width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     padding-bottom: 10px;
 
     font-size: 20px;
 }
 
-.step_back{
+.step_back {
     width: 23px;
     height: 23px;
 
-
     align-self: flex-end;
 
-    background-image: url("../img/стрелка.png");
+    background-image: url('../img/стрелка.png');
     background-repeat: no-repeat;
     background-size: contain;
     transform: rotate(180deg);
 }
 
-.step_back:hover{
+.step_back:hover {
     cursor: pointer;
 }
 
-.step_next{
+.step_next {
     width: 23px;
     height: 23px;
 
-
     align-self: flex-end;
 
-    background-image: url("../img/стрелка.png");
+    background-image: url('../img/стрелка.png');
     background-repeat: no-repeat;
     background-size: contain;
-
-    
 }
 
-.step_next:hover{
+.step_next:hover {
     cursor: pointer;
 }
 
-.calendar{
+.calendar {
     height: auto;
     width: 400px;
     background: rgb(187, 249, 252);
@@ -62,28 +58,19 @@ body{
     text-align: center;
 }
 
-.calendar__weeksDay_name{
+.calendar__weeksDay_name {
     background-color: #00ff8c;
 }
 
-.calendar__weeksDay_item{
+.calendar__weeksDay_item {
     margin-top: 5px;
     background-color: rgb(0, 255, 213);
-
 }
 
-.color_turquoise{
-    background-color: #00FFD5;
+.color_turquoise {
+    background-color: #00ffd5;
 }
 
-.color_lBlue{
+.color_lBlue {
     background-color: #34bbd7;
-}
-
-.numMonth{
-    display: none;
-}
-
-.year{
-    margin-left: 10px;
 }
