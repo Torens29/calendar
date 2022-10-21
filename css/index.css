@@ -44,6 +44,7 @@ body{
 
     
 }
+
 .step_next:hover{
     cursor: pointer;
 }
@@ -71,3 +72,18 @@ body{
 
 }
 
+.color_turquoise{
+    background-color: #00FFD5;
+}
+
+.color_lBlue{
+    background-color: #34bbd7;
+}
+
+.numMonth{
+    display: none;
+}
+
+.year{
+    margin-left: 10px;
+}
